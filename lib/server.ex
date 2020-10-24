@@ -2,7 +2,8 @@ defmodule Primify.Server do
   @initial_state %{highest_prime: nil, next_number: nil}
 
   def start(n) do
-    state = increment_next_number(%{@initial_state | next_number: n})
+    state = check_if_prime(@initial_state, n)
+    state = increment_next_number(%{state | next_number: n})
 
     loop(state)
   end
@@ -13,6 +14,28 @@ defmodule Primify.Server do
         state = increment_next_number(state)
         send(pid, state.next_number)
         loop(state)
+
+      {:highest_prime, pid} ->
+        state = check_if_prime(state, state.next_number)
+        send(pid, state.highest_prime)
+        loop(state)
+    end
+  end
+
+  def highest_prime(pid) do
+    send(pid, {:highest_prime, self()})
+
+    receive do
+      number -> number
+    after
+      5000 -> raise "Server not responding"
+    end
+  end
+
+  def check_if_prime(state, n) do
+    case Primify.is_prime?(n) do
+      true -> %{state | highest_prime: n}
+      false -> state
     end
   end
 

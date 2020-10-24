@@ -12,4 +12,12 @@ defmodule Primify.ServerTest do
       end
     end
   end
+
+  describe "highest_prime/1" do
+    test "it returns the highest_prime" do
+      server_pid = spawn(Primify.Server, :start, [3])
+
+      assert 3 == Server.highest_prime(server_pid)
+    end
+  end
 end

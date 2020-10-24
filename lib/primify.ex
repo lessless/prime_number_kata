@@ -1,16 +1,16 @@
 defmodule Primify do
-  def fermat(1) do
-    :ok
+  def is_prime?(1) do
+    true
   end
 
-  def fermat(p) do
+  def is_prime?(p) do
     r = :random.uniform(p - 1)
     t = mpow(r, p - 1, p)
 
     if t == 1 do
-      :ok
+      true
     else
-      :no
+      false
     end
   end
 
