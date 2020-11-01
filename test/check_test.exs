@@ -10,4 +10,10 @@ defmodule Primify.CheckTest do
       end
     end
   end
+
+  describe "highest_prime_in_range/1" do
+    test "returns the highest_prime in a range" do
+      assert 7 = Check.highest_prime_in_range(0..10)
+    end
+  end
 end

@@ -1,4 +1,14 @@
 defmodule Primify.Check do
+  def highest_prime_in_range(n..m) do
+    result =
+      n..m
+      |> Enum.map(fn x -> {x, is_prime?(x)} end)
+      |> Enum.filter(fn {x, is_prime} -> is_prime == true end)
+      |> List.last()
+
+    elem(result, 0)
+  end
+
   def is_prime?(0) do
     false
   end
