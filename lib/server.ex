@@ -1,4 +1,6 @@
 defmodule Primify.Server do
+  alias Primify.Check
+
   @initial_state %{highest_prime: nil, current_number: nil}
 
   def start(n) do
@@ -30,7 +32,7 @@ defmodule Primify.Server do
   end
 
   def check_if_prime(state, n) do
-    case Primify.is_prime?(n) do
+    case Check.is_prime?(n) do
       true -> %{state | highest_prime: n}
       false -> state
     end
