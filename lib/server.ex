@@ -1,22 +1,19 @@
 defmodule Primify.Server do
-  @initial_state %{highest_prime: nil, next_number: nil}
+  @initial_state %{highest_prime: nil, current_number: nil}
 
   def start(n) do
-    state = check_if_prime(@initial_state, n)
-    state = increment_next_number(%{state | next_number: n})
-
-    loop(state)
+    loop(%{@initial_state | current_number: n})
   end
 
   defp loop(state) do
     receive do
       {:next_number, pid} ->
-        state = increment_next_number(state)
-        send(pid, state.next_number)
+        state = increment_current_number(state)
+        send(pid, state.current_number)
         loop(state)
 
       {:highest_prime, pid} ->
-        state = check_if_prime(state, state.next_number)
+        state = check_if_prime(state, state.current_number)
         send(pid, state.highest_prime)
         loop(state)
     end
@@ -39,8 +36,8 @@ defmodule Primify.Server do
     end
   end
 
-  defp increment_next_number(state) do
-    %{state | next_number: state.next_number + 1}
+  defp increment_current_number(state) do
+    %{state | current_number: state.current_number + 1}
   end
 
   def next_number(pid) do

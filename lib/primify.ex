@@ -1,4 +1,8 @@
 defmodule Primify do
+  def is_prime?(0) do
+    false
+  end
+
   def is_prime?(1) do
     true
   end
